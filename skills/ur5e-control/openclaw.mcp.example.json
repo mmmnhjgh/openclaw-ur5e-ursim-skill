@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "ur5e-mcp": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "C:\\Users\\kongb\\Desktop\\优傲机械臂，UR5e\\bridge\\start_ur5e_mcp.bat"
+      ]
+    }
+  }
+}

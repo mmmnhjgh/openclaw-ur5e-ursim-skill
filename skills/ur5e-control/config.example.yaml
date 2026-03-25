@@ -1,0 +1,24 @@
+robot_ip: 127.0.0.1
+dashboard_port: 29999
+rtde_port: 30004
+urscript_port: 30002
+connect_timeout_s: 2.0
+simulation: true
+require_confirm_for_first_motion: true
+default_joint_velocity: 0.2
+default_joint_acceleration: 0.4
+max_joint_velocity: 0.5
+max_joint_acceleration: 0.8
+max_tcp_speed: 0.25
+tcp_offset: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+payload:
+  mass_kg: 0.0
+  center_of_gravity_m: [0.0, 0.0, 0.0]
+workspace_bounds:
+  x: [-0.60, 0.60]
+  y: [-0.60, 0.60]
+  z: [0.05, 0.80]
+named_poses:
+  home: [0.0, -1.57, 1.57, -1.57, -1.57, 0.0]
+  approach: [0.2, -1.45, 1.65, -1.75, -1.55, 0.1]
+  park: [-0.2, -1.60, 1.70, -1.65, -1.57, -0.1]
