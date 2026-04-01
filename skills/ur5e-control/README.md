@@ -21,6 +21,7 @@ This folder contains a local-first `UR5e` control skill for OpenClaw plus the co
 - `SKILL.md`: model-facing behavior and safety rules
 - `config.example.yaml`: copy and edit for your robot or simulator
 - `config.ursim.yaml`: ready-to-use local URSim config
+- `config.real.example.yaml`: beginner-friendly real robot template
 - `safety_checklist.md`: pre-run and recovery checklist
 - `OPENCLAW_QUICKSTART.md`: exact OpenClaw and browser animation steps
 
@@ -75,6 +76,34 @@ When the robot is in `Remote` mode, many local buttons are intentionally disable
 1. `ur5e_get_status`
 2. `ur5e_goto_named_pose(name="home", confirm=true)`
 3. `ur5e_stop_motion()`
+
+## Switch from URSim to a real UR5e
+
+1. Copy `skills/ur5e-control/config.real.example.yaml` to your own real-robot config, for example `skills/ur5e-control/config.real.yaml`.
+2. Update these fields before any motion:
+   - `robot_ip`
+   - `simulation: false`
+   - `tcp_offset`
+   - `payload.mass_kg`
+   - `payload.center_of_gravity_m`
+   - `workspace_bounds`
+   - `named_poses`
+3. Put the robot in `Remote Control` on the teach pendant.
+4. Start the bridge with the real config path:
+
+```powershell
+$env:UR5E_CONFIG = "C:\Users\kongb\Desktop\优傲机械臂，UR5e\skills\ur5e-control\config.real.yaml"
+python -m ur5e_bridge.server
+```
+
+5. In OpenClaw, first call `ur5e_get_status`, then move only to a safe `home` pose at low speed.
+
+## Real robot safety reminders
+
+- Do not reuse `demo_left`, `demo_right`, or `demo_high` on real hardware unless you validated them in your own cell.
+- Keep the first real motion slow and empty-load if possible.
+- Verify TCP, payload, and CoG before motion.
+- Keep line-of-sight and E-stop access during testing.
 
 ## Verified URSim flow
 

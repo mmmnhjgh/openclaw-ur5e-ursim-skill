@@ -20,6 +20,7 @@
 
 - `skills/ur5e-control/SKILL.md`
 - `skills/ur5e-control/config.ursim.yaml`
+- `skills/ur5e-control/config.real.example.yaml`
 - `skills/ur5e-control/OPENCLAW_QUICKSTART.md`
 - `bridge/start_ur5e_mcp.ps1`
 - `bridge/start_ur5e_mcp.bat`
@@ -244,6 +245,78 @@ cmd /c C:\Users\kongb\Desktop\优傲机械臂，UR5e\bridge\start_ur5e_mcp.bat
 - workspace bounds
 
 并且一定要在安全条件满足后再操作真机。
+
+## 真机配置怎么改
+
+如果你准备切到真实 `UR5e`，建议不要直接改 `config.ursim.yaml`，而是复制一份真机配置：
+
+- `skills/ur5e-control/config.real.example.yaml`
+
+你可以把它复制成：
+
+- `skills/ur5e-control/config.real.yaml`
+
+### 最少要改的字段
+
+- `robot_ip`：改成真实机械臂控制柜 IP
+- `simulation`：改成 `false`
+- `tcp_offset`：改成你真实工具末端 TCP
+- `payload.mass_kg`：改成真实负载重量
+- `payload.center_of_gravity_m`：改成真实重心
+- `workspace_bounds`：改成你现场允许的安全区域
+- `named_poses`：改成你现场验证过的安全点位
+
+### 一个真机配置示例
+
+```yaml
+robot_ip: 192.168.1.102
+dashboard_port: 29999
+rtde_port: 30004
+urscript_port: 30002
+connect_timeout_s: 2.0
+simulation: false
+require_confirm_for_first_motion: true
+default_joint_velocity: 0.10
+default_joint_acceleration: 0.20
+max_joint_velocity: 0.30
+max_joint_acceleration: 0.50
+max_tcp_speed: 0.15
+tcp_offset: [0.0, 0.0, 0.150, 0.0, 0.0, 0.0]
+payload:
+  mass_kg: 0.8
+  center_of_gravity_m: [0.0, 0.0, 0.06]
+workspace_bounds:
+  x: [-0.40, 0.40]
+  y: [-0.40, 0.40]
+  z: [0.10, 0.60]
+named_poses:
+  home: [0.0, -1.57, 1.57, -1.57, -1.57, 0.0]
+  approach: [0.1, -1.45, 1.55, -1.65, -1.57, 0.0]
+  park: [-0.1, -1.60, 1.60, -1.55, -1.57, 0.0]
+```
+
+### 真机启动方式
+
+先把环境变量切到真机配置：
+
+```powershell
+$env:UR5E_CONFIG = "C:\Users\kongb\Desktop\优傲机械臂，UR5e\skills\ur5e-control\config.real.yaml"
+python -m ur5e_bridge.server
+```
+
+如果你用 OpenClaw 配 MCP，也要把 `UR5E_CONFIG` 改成这份真机配置路径。
+
+### 真机第一次联调建议
+
+第一次连真机时，请按这个顺序来：
+
+1. 先确认控制柜已进入 `Remote Control`
+2. 先只调用 `ur5e_get_status`
+3. 确认 `remote_control=true`
+4. 低速移动到 `home`
+5. 再测试 `approach` 和 `park`
+
+不要一上来就使用仿真里的 `demo_left`、`demo_right`、`demo_high`。
 
 ## 给 GitHub 用的目录建议
 

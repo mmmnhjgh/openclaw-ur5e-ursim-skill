@@ -61,3 +61,10 @@ UR5E_CONFIG=C:\Users\kongb\Desktop\优傲机械臂，UR5e\skills\ur5e-control\co
 - In `Remote` mode, many local UI buttons are disabled. That is expected.
 - The robot should move from OpenClaw or MCP tools, not from the local play button.
 - If motion is rejected, call `ur5e_get_status` first and check `remote_control`, `robot_mode`, and `safety_status`.
+
+## If you switch to a real robot later
+
+- Copy `skills/ur5e-control/config.real.example.yaml` to `skills/ur5e-control/config.real.yaml`
+- Fill in the real `robot_ip`, `tcp_offset`, `payload`, `workspace_bounds`, and safe `named_poses`
+- Start the bridge with that file instead of `config.ursim.yaml`
+- First test only `ur5e_get_status` and a slow move to `home`
